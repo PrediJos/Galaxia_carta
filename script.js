@@ -17,8 +17,8 @@ controls.enableDamping = true;
 controls.dampingFactor = 0.05;
 
 controls.enablePan = false;
-controls.minDistance = 5;
-controls.maxDistance = 80;
+controls.minDistance = 150;
+controls.maxDistance = 900;
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.domElement.style.position="fixed";
@@ -26,7 +26,7 @@ renderer.domElement.style.top="0";
 renderer.domElement.style.left="0";
 document.body.appendChild(renderer.domElement);
 
-camera.position.z = 400;
+camera.position.set(0, 80, 450);
 
 // LUZ
 const light = new THREE.PointLight(0xffffff,1.2);
@@ -227,7 +227,7 @@ document.addEventListener("wheel", e=>{
 
 let transitionStarted = false;
 
-renderer.domElement.addEventListener("click", () => {
+function startTransition(){
 
   if(transitionStarted) return;
   transitionStarted = true;
@@ -253,13 +253,21 @@ renderer.domElement.addEventListener("click", () => {
 
       galaxyObjects.forEach(obj=> scene.remove(obj));
       scene.remove(planet);
+      scene.remove(ring);
+      scene.remove(glow);
 
-      document.getElementById("letterScreen")
-        .classList.add("show");
+      document.getElementById("letterScreen").classList.add("show");
     }
 
   },16);
-});
+}
+
+// PC
+renderer.domElement.addEventListener("click", startTransition);
+
+// 📱 CELULAR (ESTA ES LA CLAVE)
+renderer.domElement.addEventListener("touchstart", startTransition);
+
 
 //////////////////////////////////////////////////
 // 🔄 ANIMACIÓN
