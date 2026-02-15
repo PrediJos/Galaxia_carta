@@ -265,8 +265,27 @@ function startTransition(){
 // PC
 renderer.domElement.addEventListener("click", startTransition);
 
-// 📱 CELULAR (ESTA ES LA CLAVE)
-renderer.domElement.addEventListener("touchstart", startTransition);
+//////////////////////////////////////////////////
+// 📱 DOBLE TAP PARA CELULAR (NO INTERFIERE CON ORBIT)
+//////////////////////////////////////////////////
+
+let lastTap = 0;
+let doubleTapDelay = 300; // milisegundos
+
+renderer.domElement.addEventListener("touchend", function (event) {
+
+  let currentTime = new Date().getTime();
+  let tapLength = currentTime - lastTap;
+
+  // si el tiempo entre taps es corto → doble tap
+  if (tapLength < doubleTapDelay && tapLength > 0) {
+      startTransition();
+      event.preventDefault(); // evita zoom/doble click del navegador
+  }
+
+  lastTap = currentTime;
+
+}, false);
 
 
 //////////////////////////////////////////////////
