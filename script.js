@@ -9,6 +9,17 @@ let camera = new THREE.PerspectiveCamera(
 );
 
 let renderer = new THREE.WebGLRenderer({antialias:true});
+
+// CONTROLES (mouse + touch)
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+controls.enableDamping = true;
+controls.dampingFactor = 0.05;
+
+controls.enablePan = false;
+controls.minDistance = 5;
+controls.maxDistance = 80;
+
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.domElement.style.position="fixed";
 renderer.domElement.style.top="0";
@@ -256,6 +267,10 @@ renderer.domElement.addEventListener("click", () => {
 
 function animate(){
   requestAnimationFrame(animate);
+
+  // ← ESTA LINEA ES LA QUE ACTIVA TOUCH Y MOUSE
+  controls.update();
+
   planet.rotation.y += 0.002;
   ring.rotation.z += 0.001;
   glow.rotation.y += 0.001;
